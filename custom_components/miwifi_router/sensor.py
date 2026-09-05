@@ -683,11 +683,18 @@ class MiWiFiDeviceSensor(CoordinatorEntity[MiWiFiCoordinator], SensorEntity):
         if self._mac in devices:
             dev_data = devices[self._mac]
             key = self.entity_description.key
+            # Device context shared by all per-device sensor variants:
+            # mac/ip let users identify the device behind generic names.
+            device_attrs = {
+                "mac": self._mac,
+                "ip": dev_data.get("ip", ""),
+            }
 
             if key == "device_download_speed":
                 value = int(dev_data.get("downspeed", 0))
                 self._attr_native_value = self._convert_for_unit(value)
                 self._attr_extra_state_attributes = {
+                    **device_attrs,
                     "raw_b": value,
                     "human_readable": _format_speed(value),
                 }
@@ -696,6 +703,7 @@ class MiWiFiDeviceSensor(CoordinatorEntity[MiWiFiCoordinator], SensorEntity):
                 value = int(dev_data.get("upspeed", 0))
                 self._attr_native_value = self._convert_for_unit(value)
                 self._attr_extra_state_attributes = {
+                    **device_attrs,
                     "raw_b": value,
                     "human_readable": _format_speed(value),
                 }
@@ -704,6 +712,7 @@ class MiWiFiDeviceSensor(CoordinatorEntity[MiWiFiCoordinator], SensorEntity):
                 value = int(dev_data.get("download", 0))
                 self._attr_native_value = self._convert_for_unit(value)
                 self._attr_extra_state_attributes = {
+                    **device_attrs,
                     "raw_b": value,
                     "human_readable": _format_bytes(value),
                 }
@@ -712,6 +721,7 @@ class MiWiFiDeviceSensor(CoordinatorEntity[MiWiFiCoordinator], SensorEntity):
                 value = int(dev_data.get("upload", 0))
                 self._attr_native_value = self._convert_for_unit(value)
                 self._attr_extra_state_attributes = {
+                    **device_attrs,
                     "raw_b": value,
                     "human_readable": _format_bytes(value),
                 }

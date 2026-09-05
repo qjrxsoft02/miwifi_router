@@ -563,6 +563,9 @@ custom_components/miwifi_router/
 
 ## 📝 更新日志
 
+### v1.6.3
+- 设备传感器（per-device sensor）新增 `mac` 和 `ip` 属性，解决同名/泛用名设备无法辨识实体的问题
+
 ### v1.6.2
 - 新增路由器温度传感器（`sensor.miwifi_router_temperature`），温度为 0 时显示 unknown
 
